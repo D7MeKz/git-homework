@@ -15,12 +15,12 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-          path: python_version.txt
       - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
-    
-      - name: Make Artifact
+        run: |
+          version_info=$(python -c "import sys; print(sys.version)")
+          echo "$version_info" > python_version_${{ matrix.python-version }}.txt
+      - name: Upload Python version info as an artifact
         uses: actions/upload-artifact@v3
         with:
-          name: python-version-${{ matrix.python-version }}
-          path: .
+          name: python-version-info-${{ matrix.python-version }}
+          path: python_version_${{ matrix.python-version }}.txt
